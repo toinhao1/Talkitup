@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         model: "Topics",
         key: "id",
         as: "topicId",
-      };
+      }
     }
   }, {});
   Banner.associate = function(models) {
