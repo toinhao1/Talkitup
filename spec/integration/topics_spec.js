@@ -23,9 +23,7 @@ describe("routes : topics", () => {
       });
     });
   });
-
   describe("GET /topics", () => {
-
     it("should return a status code 200 and all topics", (done) => {
       request.get(base, (err, res, body) => {
         expect(res.statusCode).toBe(200);
@@ -75,7 +73,7 @@ describe("routes : topics", () => {
     it("should render a view with the selected topic", (done) => {
       request.get(`${base}${this.topic.id}`, (err, res, body) => {
         expect(err).toBeNull();
-        expect(body).toContain("JS Frameworks");
+        expect(title).toContain("JS Frameworks");
         done();
       });
     });
