@@ -6,8 +6,8 @@ module.exports = {
   getAllTopics(callback){
     return Topic.all()
 
-    .then((topics) => {
-      callback(null, topics);
+    .then((topic) => {
+      callback(null, topic);
     })
     .catch((err) => {
       callback(err);
@@ -71,4 +71,4 @@ module.exports = {
        callback(err);
      })
    }
-}
+};
