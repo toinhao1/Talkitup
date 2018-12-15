@@ -70,13 +70,13 @@ describe("routes : topics", () => {
     });
   });
   describe("GET /topics/:id", () => {
-    it("should render a view with the selected topic", (done) => {
-      request.get(`${base}${this.topic.id}`, (err, res, body) => {
-        expect(err).toBeNull();
-        expect(title).toContain("JS Frameworks");
-        done();
-      });
-    });
+     it("should render a view with the selected topic", (done) => {
+       request.get(`${base}${this.topic.id}`, (err, res, body) => {
+         expect(err).toBeNull();
+         expect(body).toContain("JS Frameworks");
+         done();
+       });
+     });
   });
   describe("POST /topics/:id/destroy", () => {
     it("should delete the topic with the associated ID", (done) => {

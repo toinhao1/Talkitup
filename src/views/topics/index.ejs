@@ -6,7 +6,9 @@
   <body>
     <main class="container">
       <% include ../static/partials/navbar.ejs %>
+
       <h1>Topics</h1>
+
       <ul class="list-group">
         <% topics.forEach((topic) => { %>
           <li class="list-group-item">
@@ -14,6 +16,7 @@
           </li>
         <% }) %>
       </ul>
+
     </main>
   </body>
 </html>
