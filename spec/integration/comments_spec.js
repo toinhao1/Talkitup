@@ -11,12 +11,14 @@ const Comment = require("../../src/db/models").Comment;
 describe("routes : comments", () => {
 
   beforeEach((done) => {
+    // define variables
     this.user;
     this.topic;
     this.post;
     this.comment;
 
     sequelize.sync({force: true}).then((res) => {
+      // create various pieces of the app
       User.create({
         email: "starman@tesla.com",
         password: "Trekkie4lyfe"
@@ -163,7 +165,7 @@ describe("routes : comments", () => {
         );
       });
     });
-
+    // test to see if signed in user can delete their own comment
     describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
       it("should delete the comment with the associated ID", (done) => {
         Comment.all()
@@ -182,6 +184,90 @@ describe("routes : comments", () => {
               })
           });
         })
+      });
+    });
+    describe("Post /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+      beforeEach((done) => {
+        User.create({
+          email: "user@example.com",
+          password: "123456",
+          role: "member"
+        })
+        .then((user) => {
+          request.get({
+            url: "http://localhost:3000/auth/fake",
+            form: {
+              role: user.role,
+              userId: user.id,
+              email: user.email
+            }
+          },
+          (err, res, body) => {
+            done();
+            }
+          );
+        });
+      });
+      it("should not delete another members comment", (done) => {
+        Comment.all()
+        .then((comments) => {
+          const commentCount = comments.length;
+          expect(commentCount).toBe(1);
+          request.post(
+            `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+            (err, res, body) => {
+              expect(res.statusCode).toBe(401);
+              Comment.all()
+              .then((comments) => {
+                expect(err).toBeNull();
+                expect(comments.length).toBe(commentCount);
+                done();
+              })
+            }
+          );
+        });
+      });
+    });
+    describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+      beforeEach((done) => {
+        User.create({
+          email: "admin@example.com",
+          password: "123456",
+          role: "admin"
+        })
+        .then((user) => {
+          request.get({
+            url: "http://localhost:3000/auth/fake",
+            form: {
+              role: user.role,
+              userId: user.id,
+              email: user.email
+            }
+          },
+            (err, res, body) => {
+              done();
+            }
+          );
+        });
+      });
+      it("should delete another members comment", (done) => {
+        Comment.all()
+        .then((comments) => {
+          const commentCount = comments.length;
+          expect(commentCount).toBe(1);
+          request.post(
+            `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+            (err, res, body) => {
+              expect(res.statusCode).toBe(302);
+              Comment.all()
+              .then((comments) => {
+                expect(err).toBeNull();
+                expect(comments.length).toBe(commentCount - 1);
+                done();
+              })
+            }
+          );
+        });
       });
     });
   });
