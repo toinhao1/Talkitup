@@ -41,5 +41,15 @@ module.exports = {
     req.logout();
     req.flash("notcie", "You've successfully signed out!");
     res.redirect("/")
+  },
+  show(req, res, next) {
+    userQueries.getUser(req.params.id, (err, result) => {
+      if (err || result.user === undefined) {
+        req.flash("notcie", "No user found with that ID.");
+        res.redirect("/");
+      } else {
+        res.render("users/show", {...result});
+      }
+    });
   }
 }
