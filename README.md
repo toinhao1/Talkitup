@@ -2,7 +2,7 @@
 
 #### A web application that allows users to create topics and then engage with the topics by posting, commenting, voting and favoriting.
 
-![screenshot](/src/assets/Talkitup.png)
+![screenshot](/src/assets/Talkituo.png)
 
 ### Resources:
 * Node.js
